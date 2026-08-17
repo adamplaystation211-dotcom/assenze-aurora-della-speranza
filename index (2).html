@@ -1,0 +1,862 @@
+﻿<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Registro Presenze - Aurora della Speranza</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #0F766E;
+            --primary-light: #CCFBF1;
+            --primary-dark: #115E59;
+            --bg: #F8FAFC;
+            --card-bg: #FFFFFF;
+            --text-main: #0F172A;
+            --text-muted: #64748B;
+            --border: #E2E8F0;
+            --danger: #EF4444;
+            --danger-light: #FEE2E2;
+            --success: #10B981;
+            --success-light: #D1FAE5;
+            --radius: 20px;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+            --shadow-md: 0 10px 25px -5px rgba(15, 118, 110, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 12px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 540px;
+        }
+
+        /* HEADER APP */
+        .app-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border-radius: var(--radius);
+            padding: 24px 20px;
+            text-align: center;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-icon {
+            width: 52px;
+            height: 52px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
+            border-radius: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+        }
+
+        .app-header h1 {
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: -0.3px;
+        }
+
+        .app-header p {
+            font-size: 13px;
+            opacity: 0.9;
+            margin-top: 4px;
+        }
+
+        /* CARDS & INPUTS */
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 16px;
+            border: 1px solid var(--border);
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        input[type="text"], input[type="password"], select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1.5px solid var(--border);
+            border-radius: 14px;
+            font-size: 15px;
+            outline: none;
+            background: #F8FAFC;
+            color: var(--text-main);
+            transition: all 0.2s ease;
+        }
+
+            input[type="text"]:focus, input[type="password"]:focus, select:focus {
+                background: #FFFFFF;
+                border-color: var(--primary);
+                box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.1);
+            }
+
+        /* BUTTONS */
+        .btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 14px rgba(15, 118, 110, 0.3);
+        }
+
+            .btn-primary:active {
+                transform: scale(0.98);
+                background: var(--primary-dark);
+            }
+
+        .btn-secondary {
+            background: #F1F5F9;
+            color: var(--text-muted);
+            margin-top: 10px;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1.5px solid var(--primary);
+            color: var(--primary);
+            margin-top: 10px;
+        }
+
+        .btn-action-small {
+            padding: 8px 12px;
+            font-size: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: white;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* CONTATORI E CONTROLLI RAPIDI */
+        .stats-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .stat-chip {
+            flex: 1;
+            padding: 10px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+            .stat-chip.presenti {
+                background: var(--success-light);
+                color: var(--success);
+            }
+
+            .stat-chip.assenti {
+                background: var(--danger-light);
+                color: var(--danger);
+            }
+
+        .quick-actions {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        /* LISTA ALUNNI */
+        .student-card {
+            background: #F8FAFC;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 14px;
+            margin-bottom: 10px;
+            transition: all 0.2s;
+        }
+
+            .student-card.is-absent {
+                background: #FEF2F2;
+                border-color: #FCA5A5;
+            }
+
+        .student-row-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .student-name {
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+            .status-badge.presente {
+                background: var(--success-light);
+                color: var(--success);
+            }
+
+            .status-badge.assente {
+                background: var(--danger-light);
+                color: var(--danger);
+            }
+
+        /* SWITCH TOUCH */
+        .switch-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 52px;
+            height: 30px;
+        }
+
+            .switch input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #CBD5E1;
+            transition: .3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 30px;
+        }
+
+            .slider:before {
+                position: absolute;
+                content: "";
+                height: 24px;
+                width: 24px;
+                left: 3px;
+                bottom: 3px;
+                background-color: white;
+                transition: .3s cubic-bezier(0.4, 0, 0.2, 1);
+                border-radius: 50%;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+            }
+
+        input:checked + .slider {
+            background-color: var(--danger);
+        }
+
+            input:checked + .slider:before {
+                transform: translateX(22px);
+            }
+
+        /* ADMIN LISTS */
+        .admin-class-card {
+            background: #F8FAFC;
+            border-radius: 12px;
+            padding: 12px 14px;
+            border: 1px solid var(--border);
+            margin-bottom: 10px;
+        }
+
+        .admin-class-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .status-toast {
+            margin-top: 16px;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 700;
+            text-align: center;
+        }
+
+            .status-toast.success {
+                background: var(--success-light);
+                color: var(--success);
+            }
+
+            .status-toast.error {
+                background: var(--danger-light);
+                color: var(--danger);
+            }
+
+        .loading-indicator {
+            font-size: 12px;
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        footer {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 12px;
+            padding: 16px 0;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- APP HEADER -->
+        <div class="app-header">
+            <div class="header-icon">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M9 11l3 3L22 4" />
+                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+                </svg>
+            </div>
+            <h1 id="headerTitle">Aurora della Speranza</h1>
+            <p id="headerSubtitle">Registro Presenze Smart Mobile</p>
+        </div>
+
+        <!-- 1. LOGIN SECTION -->
+        <div id="loginSection" class="card">
+            <h3 style="font-size: 16px; margin-bottom: 16px; color: var(--primary);">Accedi al Registro</h3>
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" placeholder="Es. aa, aiop o admin">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Inserisci password">
+            </div>
+            <button class="btn btn-primary" onclick="login()">Accedi</button>
+            <button class="btn btn-outline" onclick="mostraRegistrazione()">Non hai un account? Registrati</button>
+            <div id="loginError" class="status-toast error hidden"></div>
+        </div>
+
+        <!-- 1B. REGISTRAZIONE SECTION -->
+        <div id="registerSection" class="card hidden">
+            <h3 style="font-size: 16px; margin-bottom: 16px; color: var(--primary);">Registrazione Maestra</h3>
+            <div class="form-group">
+                <label for="regUsername">Nuovo Username</label>
+                <input type="text" id="regUsername" placeholder="Es. aiop, maria, maestra123...">
+            </div>
+            <div class="form-group">
+                <label for="regPassword">Nuova Password</label>
+                <input type="password" id="regPassword" placeholder="Scegli una password">
+            </div>
+            <div class="form-group">
+                <label for="regRole">Ruolo Account</label>
+                <select id="regRole" disabled>
+                    <option value="maestra" selected>Maestra / Docente</option>
+                </select>
+            </div>
+            <button class="btn btn-primary" onclick="registraUtente()">Conferma Registrazione</button>
+            <button class="btn btn-secondary" onclick="mostraLogin()">Torna al Login</button>
+            <div id="regStatus" class="status-toast hidden"></div>
+        </div>
+
+        <!-- 2. PANNELLO ADMIN -->
+        <div id="adminSection" class="card hidden">
+            <h3 style="font-size: 16px; margin-bottom: 16px; color: var(--primary);">Pannello Amministratore</h3>
+
+            <!-- Creazione / Assegnazione -->
+            <div class="form-group">
+                <label for="newClassName">Nome Nuova Classe</label>
+                <input type="text" id="newClassName" placeholder="Es. Classe 1A">
+            </div>
+            <div class="form-group">
+                <label for="assignTeacher">Username Maestra</label>
+                <input type="text" id="assignTeacher" placeholder="Es. aa, aiop...">
+            </div>
+            <button class="btn btn-primary" onclick="aggiungiClasse()">Aggiungi Classe</button>
+
+            <hr style="margin: 20px 0; border: none; border-top: 1px solid var(--border);">
+
+            <label>Gestione & Spostamento Classi</label>
+            <div class="form-group">
+                <input type="text" id="searchAdminClass" placeholder="Filtra per classe o maestra..." oninput="caricaPannelloAdmin()">
+            </div>
+
+            <div id="classListAdmin"></div>
+
+            <button class="btn btn-secondary" onclick="logout()">Esci dall'Account</button>
+        </div>
+
+        <!-- 3. SEZIONE REGISTRO MAESTRE -->
+        <div id="appSection" class="card hidden">
+
+            <div id="autoSyncStatus" class="loading-indicator hidden">🔄 Aggiornamento classi dal server in corso...</div>
+
+            <!-- Selezione Classe -->
+            <div class="form-group">
+                <label for="selectClass">Classe Attiva</label>
+                <select id="selectClass" onchange="cambiaClasse()"></select>
+            </div>
+
+            <!-- Barra Statistiche -->
+            <div class="stats-bar">
+                <div class="stat-chip presenti">Presenti: <span id="countPresenti">0</span></div>
+                <div class="stat-chip assenti">Assenti: <span id="countAssenti">0</span></div>
+            </div>
+
+            <!-- Azioni Rapide -->
+            <div class="quick-actions">
+                <button class="btn-action-small" onclick="impostaTutti(false)">Tutti Presenti</button>
+                <button class="btn-action-small" onclick="impostaTutti(true)">Tutti Assenti</button>
+            </div>
+
+            <div class="form-group">
+                <input type="text" id="searchStudent" placeholder="Cerca alunno..." oninput="caricaAlunni()">
+            </div>
+
+            <!-- Lista Alunni -->
+            <div id="studentList"></div>
+
+            <button class="btn btn-primary" id="submitBtn" style="margin-top: 16px;" onclick="inviaAssenze()">
+                Invia Report Assenze
+            </button>
+
+            <button class="btn btn-secondary" onclick="logout()">Esci</button>
+            <div id="statusMsg" class="status-toast hidden"></div>
+        </div>
+
+        <footer>
+            © Aurora della Speranza • Ottimizzato per Smartphone
+        </footer>
+
+    </div>
+
+    <script>
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxZSBfyVvVqfxHSmU__Kg4TsBNQkNvP6EVyKK7eaegKrflPXCkrILJHQ0R8NsX8w4Yr/exec";
+
+        // Utenti predefiniti
+        const defaultUsers = [
+            { username: "admin", password: "admin789", role: "admin" },
+            { username: "aa", password: "123", role: "maestra" },
+            { username: "aiop", password: "123", role: "maestra" }
+        ];
+
+        // Classi predefinite locali di backup
+        const defaultClasses = [
+            { id: "c1", name: "Classe 1A", teacher: "aa", students: ["Marco Rossi", "Giulia Bruno", "Maria Gurtino", "Elena Karso"] },
+            { id: "c2", name: "Classe 2B", teacher: "aa", students: ["Luca Bianchi", "Sara Neri", "Matteo Ferrari"] },
+            { id: "c3", name: "Classe 3A", teacher: "aiop", students: ["Andrea Conti", "Sofia Romano"] }
+        ];
+
+        function getUsers() {
+            const data = localStorage.getItem('school_users');
+            return data ? JSON.parse(data) : defaultUsers;
+        }
+
+        function saveUsers(users) {
+            localStorage.setItem('school_users', JSON.stringify(users));
+        }
+
+        function getClassData() {
+            const data = localStorage.getItem('school_classes');
+            return data ? JSON.parse(data) : defaultClasses;
+        }
+
+        function saveClassData(data) {
+            localStorage.setItem('school_classes', JSON.stringify(data));
+        }
+
+        if (!localStorage.getItem('school_users')) saveUsers(defaultUsers);
+        if (!localStorage.getItem('school_classes')) saveClassData(defaultClasses);
+
+        let currentUser = null;
+        let currentClassId = "";
+
+        function triggerVibration() {
+            if ("vibrate" in navigator) {
+                navigator.vibrate(25);
+            }
+        }
+
+        /* --- REGISTRAZIONE E LOGIN --- */
+        function mostraRegistrazione() {
+            document.getElementById('loginSection').classList.add('hidden');
+            document.getElementById('registerSection').classList.remove('hidden');
+            document.getElementById('regStatus').className = "status-toast hidden";
+        }
+
+        function mostraLogin() {
+            document.getElementById('registerSection').classList.add('hidden');
+            document.getElementById('loginSection').classList.remove('hidden');
+            document.getElementById('loginError').className = "status-toast hidden";
+        }
+
+        function registraUtente() {
+            const user = document.getElementById('regUsername').value.trim();
+            const pass = document.getElementById('regPassword').value.trim();
+            const statusElem = document.getElementById('regStatus');
+
+            if (!user || !pass) {
+                statusElem.innerText = "Inserisci sia username che password.";
+                statusElem.className = "status-toast error";
+                return;
+            }
+
+            if (user.toLowerCase() === "admin") {
+                statusElem.innerText = "Impossibile usare questo username.";
+                statusElem.className = "status-toast error";
+                return;
+            }
+
+            const users = getUsers();
+            if (users.some(u => u.username.toLowerCase() === user.toLowerCase())) {
+                statusElem.innerText = "Username già esistente. Scegline un altro.";
+                statusElem.className = "status-toast error";
+                return;
+            }
+
+            users.push({ username: user, password: pass, role: "maestra" });
+            saveUsers(users);
+
+            statusElem.innerText = "Account Maestra creato con successo!";
+            statusElem.className = "status-toast success";
+
+            setTimeout(() => {
+                document.getElementById('username').value = user;
+                document.getElementById('password').value = pass;
+                mostraLogin();
+            }, 1500);
+        }
+
+        async function login() {
+            const user = document.getElementById('username').value.trim();
+            const pass = document.getElementById('password').value.trim();
+            const errorElem = document.getElementById('loginError');
+
+            const users = getUsers();
+            const foundUser = users.find(u => u.username.toLowerCase() === user.toLowerCase() && u.password === pass);
+
+            if (foundUser) {
+                currentUser = foundUser;
+                document.getElementById('loginSection').classList.add('hidden');
+
+                if (currentUser.role === "admin") {
+                    document.getElementById('adminSection').classList.remove('hidden');
+                    document.getElementById('headerTitle').innerText = "Amministrazione";
+                    await caricaDatiDalServer();
+                    caricaPannelloAdmin();
+                } else {
+                    document.getElementById('appSection').classList.remove('hidden');
+                    document.getElementById('headerTitle').innerText = `Maestra ${currentUser.username}`;
+                    // Scarica automaticamente le classi dal server per questa maestra
+                    await caricaDatiDalServer();
+                    caricaClassiMaestra();
+                }
+                return;
+            }
+
+            errorElem.innerText = "Credenziali non valide.";
+            errorElem.className = "status-toast error";
+        }
+
+        function logout() {
+            location.reload();
+        }
+
+        /* --- SINCRONIZZAZIONE AUTOMATICA (SENZA TASTO) --- */
+        async function caricaDatiDalServer() {
+            const syncStatus = document.getElementById('autoSyncStatus');
+            if (syncStatus) syncStatus.classList.remove('hidden');
+
+            try {
+                const response = await fetch(GOOGLE_SCRIPT_URL + "?action=getClasses");
+                if (response.ok) {
+                    const remoteClasses = await response.json();
+                    if (Array.isArray(remoteClasses) && remoteClasses.length > 0) {
+                        saveClassData(remoteClasses);
+                    }
+                }
+            } catch (e) {
+                console.log("Connessione lenta o offline, utilizzati dati salvati in locale.");
+            } finally {
+                if (syncStatus) syncStatus.classList.add('hidden');
+            }
+        }
+
+        /* --- ADMIN --- */
+        function caricaPannelloAdmin() {
+            const classes = getClassData();
+            const filter = document.getElementById('searchAdminClass').value.toLowerCase();
+            const container = document.getElementById('classListAdmin');
+            container.innerHTML = "";
+
+            classes.forEach((c) => {
+                if (c.name.toLowerCase().includes(filter) || c.teacher.toLowerCase().includes(filter)) {
+                    const div = document.createElement('div');
+                    div.className = 'admin-class-card';
+                    div.innerHTML = `
+                <div>
+                  <strong>${c.name}</strong> (${c.students.length} alunni)<br>
+                  <small style="color:var(--text-muted)">Maestra: <b>${c.teacher}</b></small>
+                </div>
+                <div class="admin-class-actions">
+                  <input type="text" id="move-${c.id}" placeholder="Nuova maestra..." style="padding:8px 12px; font-size:13px;">
+                  <button class="btn-action-small" style="background:var(--primary); color:white; border:none;" onclick="spostaClasse('${c.id}')">Sposta</button>
+                </div>
+              `;
+                    container.appendChild(div);
+                }
+            });
+        }
+
+        function aggiungiClasse() {
+            const name = document.getElementById('newClassName').value.trim();
+            const teacher = document.getElementById('assignTeacher').value.trim();
+
+            if (!name || !teacher) {
+                alert("Compila tutti i campi.");
+                return;
+            }
+
+            const classes = getClassData();
+            classes.push({
+                id: "c_" + Date.now(),
+                name: name,
+                teacher: teacher,
+                students: ["Nuovo Alunno 1", "Nuovo Alunno 2"]
+            });
+
+            saveClassData(classes);
+            document.getElementById('newClassName').value = "";
+            document.getElementById('assignTeacher').value = "";
+            caricaPannelloAdmin();
+        }
+
+        function spostaClasse(classId) {
+            const newTeacher = document.getElementById(`move-${classId}`).value.trim();
+            if (!newTeacher) return;
+
+            const classes = getClassData();
+            const c = classes.find(item => item.id === classId);
+            if (c) {
+                c.teacher = newTeacher;
+                saveClassData(classes);
+                caricaPannelloAdmin();
+            }
+        }
+
+        /* --- MAESTRE --- */
+        function caricaClassiMaestra() {
+            const classes = getClassData();
+            // Trova tutte le classi assegnate a questa specifica maestra
+            const myClasses = classes.filter(c => c.teacher.toLowerCase() === currentUser.username.toLowerCase());
+            const select = document.getElementById('selectClass');
+            select.innerHTML = "";
+
+            if (myClasses.length === 0) {
+                select.innerHTML = "<option>Nessuna classe assegnata</option>";
+                document.getElementById('studentList').innerHTML = "<p style='text-align:center; padding:20px; color:var(--text-muted);'>Nessuna classe trovata per il tuo account.</p>";
+                document.getElementById('countPresenti').innerText = "0";
+                document.getElementById('countAssenti').innerText = "0";
+                return;
+            }
+
+            myClasses.forEach(c => {
+                const option = document.createElement('option');
+                option.value = c.id;
+                option.innerText = c.name;
+                select.appendChild(option);
+            });
+
+            currentClassId = myClasses[0].id;
+            caricaAlunni();
+        }
+
+        function cambiaClasse() {
+            currentClassId = document.getElementById('selectClass').value;
+            caricaAlunni();
+        }
+
+        function caricaAlunni() {
+            const classes = getClassData();
+            const currentClass = classes.find(c => c.id === currentClassId);
+            if (!currentClass) return;
+
+            const filter = document.getElementById('searchStudent').value.toLowerCase();
+            const savedStates = JSON.parse(localStorage.getItem(`attendance_${currentClassId}`)) || {};
+            const container = document.getElementById('studentList');
+            container.innerHTML = "";
+
+            let countP = 0;
+            let countA = 0;
+
+            currentClass.students.forEach((nome, index) => {
+                const isAssente = savedStates[nome] ? savedStates[nome].isAssente : false;
+                const nota = savedStates[nome] ? savedStates[nome].note : "";
+
+                if (isAssente) countA++; else countP++;
+
+                if (nome.toLowerCase().includes(filter)) {
+                    const div = document.createElement('div');
+                    div.className = `student-card ${isAssente ? 'is-absent' : ''}`;
+                    div.innerHTML = `
+                <div class="student-row-header">
+                  <span class="student-name">${nome}</span>
+                  <div class="switch-container">
+                    <span class="status-badge ${isAssente ? 'assente' : 'presente'}">${isAssente ? 'Assente' : 'Presente'}</span>
+                    <label class="switch">
+                      <input type="checkbox" id="check-${index}" ${isAssente ? 'checked' : ''} onchange="aggiornaStato(${index}, '${nome}')">
+                      <span class="slider"></span>
+                    </label>
+                  </div>
+                </div>
+                <div>
+                  <input type="text" id="note-${index}" placeholder="Nota opzionale..." value="${nota}" oninput="salvaStatoLocale('${nome}', ${index})" style="padding:10px 12px; font-size:13px;">
+                </div>
+              `;
+                    container.appendChild(div);
+                }
+            });
+
+            document.getElementById('countPresenti').innerText = countP;
+            document.getElementById('countAssenti').innerText = countA;
+        }
+
+        function aggiornaStato(index, nome) {
+            triggerVibration();
+            salvaStatoLocale(nome, index);
+            caricaAlunni();
+        }
+
+        function impostaTutti(assenti) {
+            triggerVibration();
+            const classes = getClassData();
+            const currentClass = classes.find(c => c.id === currentClassId);
+            if (!currentClass) return;
+
+            const savedStates = JSON.parse(localStorage.getItem(`attendance_${currentClassId}`)) || {};
+
+            currentClass.students.forEach((nome) => {
+                const noteAttuale = savedStates[nome] ? savedStates[nome].note : "";
+                savedStates[nome] = { isAssente: assenti, note: noteAttuale };
+            });
+
+            localStorage.setItem(`attendance_${currentClassId}`, JSON.stringify(savedStates));
+            caricaAlunni();
+        }
+
+        function salvaStatoLocale(nome, index) {
+            const isAssente = document.getElementById(`check-${index}`).checked;
+            const note = document.getElementById(`note-${index}`).value;
+
+            const savedStates = JSON.parse(localStorage.getItem(`attendance_${currentClassId}`)) || {};
+            savedStates[nome] = { isAssente: isAssente, note: note };
+
+            localStorage.setItem(`attendance_${currentClassId}`, JSON.stringify(savedStates));
+        }
+
+        async function inviaAssenze() {
+            const btn = document.getElementById('submitBtn');
+            const statusMsg = document.getElementById('statusMsg');
+            const classes = getClassData();
+            const currentClass = classes.find(c => c.id === currentClassId);
+
+            btn.disabled = true;
+            btn.innerText = "Invio in corso...";
+            statusMsg.className = "status-toast hidden";
+
+            const report = currentClass.students.map((nome, index) => {
+                const isAssente = document.getElementById(`check-${index}`).checked;
+                const note = document.getElementById(`note-${index}`).value;
+                return {
+                    alunno: nome,
+                    stato: isAssente ? "Assente" : "Presente",
+                    note: note || "-"
+                };
+            });
+
+            const payload = {
+                maestra: currentUser.username,
+                classe: currentClass.name,
+                assenze: report
+            };
+
+            try {
+                await fetch(GOOGLE_SCRIPT_URL, {
+                    method: "POST",
+                    mode: "no-cors",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                });
+
+                statusMsg.innerText = "Inviato con successo a Google Sheets!";
+                statusMsg.className = "status-toast success";
+            } catch (error) {
+                statusMsg.innerText = "Erro durante l'invio. Riprova.";
+                statusMsg.className = "status-toast error";
+            } finally {
+                btn.disabled = false;
+                btn.innerText = "Invia Report Assenze";
+            }
+        }
+    </script>
+</body>
+</html>
