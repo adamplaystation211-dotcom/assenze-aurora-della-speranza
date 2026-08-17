@@ -1,1 +1,0 @@
-# aseenze-aurora-della-speranza
